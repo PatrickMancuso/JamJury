@@ -1,13 +1,17 @@
-/* app/globals.css */
-html, body {
+/* ===========================
+   GLOBAL RESET
+=========================== */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-  background: radial-gradient(circle at 30% 10%, #1a1a1a, #000);
+html, body {
+  background: #000;
   color: #fff;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  overscroll-behavior: none;
 }
 
 a {
@@ -15,35 +19,143 @@ a {
   text-decoration: none;
 }
 
-* {
-  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+/* ===========================
+   BRAND COLOR SYSTEM
+=========================== */
+:root {
+  --jj-purple: #a56bff;
+  --jj-purple-dark: #6b24d6;
+  --jj-green: #1db954;
+  --jj-gray: #1a1a1a;
+  --jj-gray-light: #2a2a2a;
+
+  --rounded: 1.25rem;
 }
+
+/* ===========================
+   TYPOGRAPHY
+=========================== */
+
+/* Page titles */
+.page-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Subtitles */
+.subtitle {
+  font-size: 1.1rem;
+  color: #bbbbbb;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
 .btn {
-  @apply w-full py-3 px-6 rounded-xl font-semibold text-center active:scale-95 shadow-lg;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: var(--rounded);
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.15s ease;
+  border: none;
 }
 
+/* Purple primary button */
 .btn-primary {
-  @apply bg-purple-600 hover:bg-purple-700 shadow-purple-500/20;
+  background: var(--jj-purple);
 }
 
+.btn-primary:hover {
+  background: var(--jj-purple-dark);
+  transform: translateY(-1px);
+}
+
+/* Dark secondary button */
 .btn-secondary {
-  @apply bg-zinc-800 hover:bg-zinc-700;
+  background: var(--jj-gray-light);
 }
 
+.btn-secondary:hover {
+  background: #383838;
+  transform: translateY(-1px);
+}
+
+/* Spotify green button */
 .btn-green {
-  @apply bg-green-500 hover:bg-green-600;
+  background: var(--jj-green);
 }
 
+.btn-green:hover {
+  background: #18a648;
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   INPUTS
+=========================== */
 .input {
-  @apply p-3 w-full rounded-xl bg-zinc-900 border border-zinc-800 
-         focus:border-purple-500 outline-none text-lg;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--jj-gray-light);
+  border: none;
+  border-radius: var(--rounded);
+  font-size: 1.1rem;
+  color: #fff;
+  text-align: center;
 }
 
+/* ===========================
+   CARD ELEMENTS
+=========================== */
 .card {
-  @apply bg-zinc-900 p-4 rounded-xl shadow-md shadow-black/40;
+  background: var(--jj-gray);
+  padding: 1rem;
+  border-radius: var(--rounded);
+  transition: 0.2s ease;
 }
 
-.card-selectable {
-  @apply bg-zinc-900 p-4 rounded-xl shadow-md shadow-black/40 
-         hover:bg-zinc-800 active:scale-95 cursor-pointer;
+.card:hover {
+  background: var(--jj-gray-light);
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   LAYOUT HELPERS
+=========================== */
+.page-container {
+  padding: 1.5rem;
+  max-width: 480px;
+  margin: auto;
+}
+
+/* Vertical spacing groups */
+.v-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ===========================
+   SPECIAL EFFECTS
+=========================== */
+
+/* Soft glow under elements */
+.glow {
+  box-shadow: 0 0 25px rgba(165, 107, 255, 0.3);
+}
+
+/* Room code display */
+.code-display {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
