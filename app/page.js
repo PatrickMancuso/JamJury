@@ -7,7 +7,7 @@ export default function Home() {
 
       {/* Subtitle */}
       <p className="subtitle">
-        The music party game where you judge your friends’ song picks — anonymously.
+        The party game where you judge peoples music taste.
       </p>
 
       {/* Buttons */}
