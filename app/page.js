@@ -2,28 +2,23 @@
 // app/page.js (Home Page)
 // =======================
 export default function Home() {
-return (
-<main className="p-6 flex flex-col items-center text-center">
-<h1 className="text-4xl font-bold mb-6">Jam Jury</h1>
-<p className="text-lg mb-10 text-gray-300">A party game where you judge your friends' music picks — anonymously.</p>
+  return (
+    <main className="min-h-screen p-6 flex flex-col items-center text-center max-w-sm mx-auto">
+      <h1 className="text-5xl font-extrabold mb-4 tracking-tight">Jam Jury</h1>
 
+      <p className="text-gray-400 mb-10 leading-relaxed max-w-xs">
+        The music party game where you judge your friends’ song picks — anonymously.
+      </p>
 
-<div className="flex flex-col gap-4 w-full max-w-xs">
-<a
-href="/judge"
-className="bg-purple-600 py-3 rounded-xl text-lg font-semibold text-center"
->
-Start as Judge
-</a>
+      <div className="flex flex-col gap-4 w-full">
+        <a href="/judge" className="btn btn-primary text-lg">
+          Start as Judge
+        </a>
 
-
-<a
-href="/player"
-className="bg-gray-800 py-3 rounded-xl text-lg font-semibold text-center"
->
-Join as Player
-</a>
-</div>
-</main>
-);
+        <a href="/player" className="btn btn-secondary text-lg">
+          Join as Player
+        </a>
+      </div>
+    </main>
+  );
 }
