@@ -18,3 +18,32 @@ a {
 * {
   transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
+.btn {
+  @apply w-full py-3 px-6 rounded-xl font-semibold text-center active:scale-95 shadow-lg;
+}
+
+.btn-primary {
+  @apply bg-purple-600 hover:bg-purple-700 shadow-purple-500/20;
+}
+
+.btn-secondary {
+  @apply bg-zinc-800 hover:bg-zinc-700;
+}
+
+.btn-green {
+  @apply bg-green-500 hover:bg-green-600;
+}
+
+.input {
+  @apply p-3 w-full rounded-xl bg-zinc-900 border border-zinc-800 
+         focus:border-purple-500 outline-none text-lg;
+}
+
+.card {
+  @apply bg-zinc-900 p-4 rounded-xl shadow-md shadow-black/40;
+}
+
+.card-selectable {
+  @apply bg-zinc-900 p-4 rounded-xl shadow-md shadow-black/40 
+         hover:bg-zinc-800 active:scale-95 cursor-pointer;
+}
