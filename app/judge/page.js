@@ -4,45 +4,39 @@
 "use client";
 import { useState } from "react";
 
-
 export default function JudgePage() {
-const [roomCode, setRoomCode] = useState(null);
-const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [roomCode, setRoomCode] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setRoomCode(Math.floor(1000 + Math.random() * 9000));
+  };
 
-const handleLogin = async () => {
-// TODO: Redirect to Spotify OAuth
-setIsLoggedIn(true);
-setRoomCode(Math.floor(1000 + Math.random() * 9000));
-};
+  return (
+    <main className="min-h-screen p-6 max-w-sm mx-auto text-center">
+      <h1 className="text-3xl font-bold mb-8">Judge Panel</h1>
 
+      {!isLoggedIn ? (
+        <button className="btn btn-green text-lg" onClick={handleLogin}>
+          Login with Spotify
+        </button>
+      ) : (
+        <>
+          <p className="text-xl text-gray-300 mb-2">Room Code</p>
 
-return (
-<main className="p-6 flex flex-col text-center items-center">
-<h1 className="text-3xl font-bold mb-6">Judge Panel</h1>
+          <div className="text-6xl font-extrabold mb-8 tracking-widest">
+            {roomCode}
+          </div>
 
-
-{!isLoggedIn ? (
-<button
-onClick={handleLogin}
-className="bg-green-500 py-3 px-6 rounded-xl text-lg font-semibold"
->
-Login with Spotify
-</button>
-) : (
-<div>
-<p className="text-xl mb-3">Room Code:</p>
-<div className="text-5xl font-bold tracking-widest mb-8">{roomCode}</div>
-
-
-<a
-href={`/judge/round?room=${roomCode}`}
-className="bg-purple-600 py-3 px-10 rounded-xl text-lg font-semibold"
->
-Start Round
-</a>
-</div>
-)}
-</main>
-);
+          <a
+            href={`/judge/round?room=${roomCode}`}
+            className="btn btn-primary text-lg"
+          >
+            Start Round
+          </a>
+        </>
+      )}
+    </main>
+  );
 }
