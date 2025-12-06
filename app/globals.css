@@ -1,0 +1,16 @@
+/* app/globals.css */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
