@@ -19,6 +19,13 @@ export default function RootLayout({ children }) {
         <div id="app-container" className="relative flex flex-col min-h-screen overflow-hidden">
           {children}
         </div>
+    <body className="bg-black text-white font-sans min-h-screen">
+  <div className="absolute inset-0 bg-gradient-to-b from-[#111] to-black opacity-60 pointer-events-none"></div>
+  <div id="app-container" className="relative flex flex-col min-h-screen overflow-hidden">
+    {children}
+  </div>
+</body>
+
       </body>
     </html>
   );
