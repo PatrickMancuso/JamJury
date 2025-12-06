@@ -1,7 +1,7 @@
 // =======================
 // app/layout.js
 // =======================
-import "app/global.css";
+import "./globals.css";
 
 
 export const metadata = {
