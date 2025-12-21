@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JamJury</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+
+    <header class="app-header">
+      <h1>🎵 Jam Jury</h1>
+      <p class="subtitle">Submit a song for this round</p>
+    </header>
+
+    <section class="submission">
+      <label>
+        Song title
+        <input type="text" id="songInput" placeholder="e.g. September" />
+      </label>
+
+      <label>
+        Artist (optional)
+        <input type="text" id="artistInput" placeholder="e.g. Earth, Wind & Fire" />
+      </label>
+    </section>
+
+    <section class="results" id="results">
+      <!-- Search results will appear here -->
+    </section>
+
+    <button class="primary-button" id="submitButton" disabled>
+      Submit Song
+    </button>
+
+    <section class="host-controls hidden" id="hostControls">
+      <h2>Host Controls</h2>
+      <button class="secondary-button">Play Next</button>
+      <button class="secondary-button">Skip</button>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
 
