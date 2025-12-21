@@ -1,1 +1,121 @@
+/* --------- Reset & Base --------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f1115;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* --------- App Container --------- */
+.app {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* --------- Header --------- */
+.app-header {
+  text-align: center;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #b5b5b5;
+  font-size: 0.95rem;
+}
+
+/* --------- Inputs --------- */
+.submission label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.submission input {
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  background: #1c1f26;
+  color: white;
+}
+
+.submission input::placeholder {
+  color: #777;
+}
+
+/* --------- Results --------- */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Placeholder style for later */
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem;
+  border-radius: 10px;
+  background: #1c1f26;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  background: #2a2e38;
+}
+
+/* --------- Buttons --------- */
+.primary-button {
+  padding: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 14px;
+  border: none;
+  background: #1db954;
+  color: black;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  background: #3a3a3a;
+  color: #777;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: none;
+  background: #2a2e38;
+  color: white;
+  cursor: pointer;
+}
+
+/* --------- Host Controls --------- */
+.host-controls {
+  border-top: 1px solid #2a2e38;
+  padding-top: 1rem;
+}
+
+.hidden {
+  display: none;
+}
 
