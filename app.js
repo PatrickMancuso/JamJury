@@ -39,9 +39,14 @@ songInput.addEventListener("input", async () => {
   if (!query) return;
 
   try {
-    const res = await fetch(
-      `${API_BASE}/search?q=${encodeURIComponent(query)}`
-    );
+    const res = await fetch(`${API_BASE}/queue`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    uri: selectedTrack.uri
+  }),
+});
+
 
     if (!res.ok) {
       throw new Error("Search failed");
