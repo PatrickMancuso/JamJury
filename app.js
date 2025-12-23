@@ -17,8 +17,17 @@ if (isHost) {
 
 let selectedTrack = null;
 
-// CHANGE THIS once your Worker is deployed
+// CHANGE THIS once the Worker is deployed
 const API_BASE = "https://jamjury.pama1549.workers.dev";
+
+const hostLoginButton = document.getElementById("hostLogin");
+
+if (isHost && hostLoginButton) {
+  hostLoginButton.addEventListener("click", () => {
+    window.location.href = `${API_BASE}/login`;
+  });
+}
+
 
 // Search Spotify as user types
 songInput.addEventListener("input", async () => {
