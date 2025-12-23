@@ -18,7 +18,7 @@ if (isHost) {
 let selectedTrack = null;
 
 // CHANGE THIS once your Worker is deployed
-const API_BASE = "https://YOUR-WORKER-URL.workers.dev";
+const API_BASE = "https://jamjury.pama1549.workers.dev";
 
 // Search Spotify as user types
 songInput.addEventListener("input", async () => {
