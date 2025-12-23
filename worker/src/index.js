@@ -1,76 +1,79 @@
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
+const songInput = document.getElementById("songInput");
+const artistInput = document.getElementById("artistInput");
+const submitButton = document.getElementById("submitButton");
+const results = document.getElementById("results");
 
-    // --- CORS ---
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    };
+let selectedTrack = null;
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+//  Replace with your deployed Worker URL
+const API_BASE = "https://YOUR-WORKER-URL.workers.dev";
+
+// Handle search as user types
+songInput.addEventListener("input", handleSearch);
+artistInput.addEventListener("input", handleSearch);
+
+async function handleSearch() {
+  results.innerHTML = "";
+  selectedTrack = null;
+  submitButton.disabled = true;
+
+  if (!songInput.value.trim()) return;
+
+  const query = `${songInput.value} ${artistInput.value}`.trim();
+
+  try {
+    const res = await fetch(
+      `${API_BASE}/search?q=${encodeURIComponent(query)}`
+    );
+
+    if (!res.ok) throw new Error("Search failed");
+
+    const tracks = await res.json();
+
+    if (tracks.length === 0) {
+      results.innerHTML = `<div class="result-item">No results found</div>`;
+      return;
     }
 
-    // --- SEARCH ENDPOINT ---
-    if (url.pathname === "/search") {
-      const query = url.searchParams.get("q");
-      if (!query) {
-        return new Response("Missing query", { status: 400 });
-      }
+    tracks.forEach(track => {
+      const div = document.createElement("div");
+      div.className = "result-item";
+      div.textContent = `${track.name} – ${track.artists[0].name}`;
 
-      const token = await getSpotifyToken(env);
+      div.addEventListener("click", () => {
+        selectedTrack = track;
+        submitButton.disabled = false;
 
-      const spotifyRes = await fetch(
-        `https://api.spotify.com/v1/search?type=track&limit=5&q=${encodeURIComponent(query)}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        document.querySelectorAll(".result-item").forEach(r => {
+          r.style.outline = "none";
+        });
 
-      const data = await spotifyRes.json();
-
-      return new Response(JSON.stringify(data.tracks.items), {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
+        div.style.outline = "2px solid #1db954";
       });
-    }
 
-    // --- SUBMIT ENDPOINT (for later queueing) ---
-    if (url.pathname === "/submit" && request.method === "POST") {
-      const body = await request.json();
-
-      // For now, just acknowledge receipt
-      return new Response(JSON.stringify({ success: true, body }), {
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    return new Response("Not found", { status: 404 });
-  },
-};
-
-async function getSpotifyToken(env) {
-  const res = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      Authorization:
-        "Basic " +
-        btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: "grant_type=client_credentials",
-  });
-
-  const data = await res.json();
-  return data.access_token;
+      results.appendChild(div);
+    });
+  } catch (err) {
+    results.innerHTML = `<div class="result-item">Error searching Spotify</div>`;
+    console.error(err);
+  }
 }
 
+// Submit selected song
+submitButton.addEventListener("click", async () => {
+  if (!selectedTrack) return;
+
+  await fetch(`${API_BASE}/submit`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      trackId: selectedTrack.id,
+      name: selectedTrack.name,
+      artist: selectedTrack.artists[0].name,
+      uri: selectedTrack.uri,
+    }),
+  });
+
+  alert("Song submitted!");
+  submitButton.disabled = true;
+});
