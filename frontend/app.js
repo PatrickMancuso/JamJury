@@ -2,6 +2,18 @@ const songInput = document.getElementById("songInput");
 const artistInput = document.getElementById("artistInput");
 const submitButton = document.getElementById("submitButton");
 const results = document.getElementById("results");
+const hostControls = document.getElementById("hostControls");
+const playNextButton = document.getElementById("playNext");
+const skipButton = document.getElementById("skip");
+
+// Detect host mode via URL
+const params = new URLSearchParams(window.location.search);
+const isHost = params.has("host");
+
+if (isHost) {
+  hostControls.classList.remove("hidden");
+}
+
 
 let selectedTrack = null;
 
