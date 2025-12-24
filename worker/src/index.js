@@ -60,6 +60,7 @@ export default {
 
       const tokenData = await tokenRes.json();
 
+accessToken = tokenData.access_token;
 
       return Response.redirect("https://jamjury.pages.dev/?host", 302);
     }
@@ -100,7 +101,7 @@ export default {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${env.ACCESS_TOKEN}`,
+Authorization: `Bearer ${accessToken}`,
           },
         }
       );
