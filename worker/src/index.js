@@ -1,4 +1,3 @@
-let accessToken = null;
 
 export default {
   async fetch(request, env) {
@@ -26,8 +25,10 @@ if (url.pathname === "/kv-test") {
 // STATUS (is host logged in?)
 // -------------------------------
 if (url.pathname === "/status") {
+  const token = await env.HOST_KV.get("host_access_token");
+
   return new Response(
-    JSON.stringify({ loggedIn: Boolean(accessToken) }),
+    JSON.stringify({ loggedIn: Boolean(token) }),
     {
       headers: {
         ...corsHeaders,
@@ -36,11 +37,12 @@ if (url.pathname === "/status") {
     }
   );
 }
+
 // -------------------------------
 // LOGOUT (clear host session)
 // -------------------------------
 if (url.pathname === "/logout") {
-  accessToken = null;
+  await env.HOST_KV.delete("host_access_token");
 
   return new Response(
     JSON.stringify({ loggedOut: true }),
@@ -52,6 +54,7 @@ if (url.pathname === "/logout") {
     }
   );
 }
+
 
     
     // -------------------------------
@@ -75,37 +78,38 @@ if (url.pathname === "/logout") {
     // -------------------------------
     // CALLBACK (Spotify redirects here)
     // -------------------------------
-    if (url.pathname === "/callback") {
-      const code = url.searchParams.get("code");
+   if (url.pathname === "/callback") {
+  const code = url.searchParams.get("code");
 
-      const tokenRes = await fetch(
-        "https://accounts.spotify.com/api/token",
-        {
-          method: "POST",
-          headers: {
-            Authorization:
-              "Basic " +
-              btoa(
-                `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
-              ),
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams({
-            grant_type: "authorization_code",
-            code,
-            redirect_uri: env.SPOTIFY_REDIRECT_URI,
-          }),
-        }
-      );
-
-      const tokenData = await tokenRes.json();
-      accessToken = tokenData.access_token;
-
-      return Response.redirect(
-        "https://patrickmancuso.github.io/JamJury/?host",
-        302
-      );
+  const tokenRes = await fetch(
+    "https://accounts.spotify.com/api/token",
+    {
+      method: "POST",
+      headers: {
+        Authorization:
+          "Basic " +
+          btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: env.SPOTIFY_REDIRECT_URI,
+      }),
     }
+  );
+
+  const tokenData = await tokenRes.json();
+
+  // STORE HOST TOKEN IN KV
+  await env.HOST_KV.put("host_access_token", tokenData.access_token);
+
+  return Response.redirect(
+    "https://patrickmancuso.github.io/JamJury/?host",
+    302
+  );
+}
+
 
     // -------------------------------
     // SEARCH (client credentials)
@@ -142,7 +146,9 @@ if (url.pathname === "/logout") {
     // -------------------------------
     // QUEUE (host only)
     // -------------------------------
-   if (url.pathname === "/queue" && request.method === "POST") {
+if (url.pathname === "/queue" && request.method === "POST") {
+  const accessToken = await env.HOST_KV.get("host_access_token");
+
   if (!accessToken) {
     return new Response(
       JSON.stringify({ error: "No host logged in" }),
