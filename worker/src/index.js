@@ -14,6 +14,38 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
+// -------------------------------
+// STATUS (is host logged in?)
+// -------------------------------
+if (url.pathname === "/status") {
+  return new Response(
+    JSON.stringify({ loggedIn: Boolean(accessToken) }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+}
+// -------------------------------
+// LOGOUT (clear host session)
+// -------------------------------
+if (url.pathname === "/logout") {
+  accessToken = null;
+
+  return new Response(
+    JSON.stringify({ loggedOut: true }),
+    {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+}
+
+    
     // -------------------------------
     // LOGIN (redirect to Spotify)
     // -------------------------------
@@ -102,28 +134,42 @@ export default {
     // -------------------------------
     // QUEUE (host only)
     // -------------------------------
-    if (url.pathname === "/queue" && request.method === "POST") {
-      const body = await request.json();
-
-      await fetch(
-        `https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(
-          body.uri
-        )}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      return new Response(JSON.stringify({ success: true }), {
+   if (url.pathname === "/queue" && request.method === "POST") {
+  if (!accessToken) {
+    return new Response(
+      JSON.stringify({ error: "No host logged in" }),
+      {
+        status: 401,
         headers: {
           ...corsHeaders,
           "Content-Type": "application/json",
         },
-      });
+      }
+    );
+  }
+
+  const body = await request.json();
+
+  await fetch(
+    `https://api.spotify.com/v1/me/player/queue?uri=${encodeURIComponent(
+      body.uri
+    )}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     }
+  );
+
+  return new Response(JSON.stringify({ success: true }), {
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json",
+    },
+  });
+}
+
 
     return new Response("Not found", { status: 404 });
   },
