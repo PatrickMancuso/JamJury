@@ -60,8 +60,6 @@ export default {
 
       const tokenData = await tokenRes.json();
 
-      // TEMP: store token in memory (OK for testing)
-      env.ACCESS_TOKEN = tokenData.access_token;
 
       return Response.redirect("https://jamjury.pages.dev/?host", 302);
     }
