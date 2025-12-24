@@ -13,6 +13,14 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
+if (url.pathname === "/kv-test") {
+  await env.HOST_KV.put("test", "working");
+  const value = await env.HOST_KV.get("test");
+
+  return new Response(JSON.stringify({ value }), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
 
 // -------------------------------
 // STATUS (is host logged in?)
