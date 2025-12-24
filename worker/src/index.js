@@ -59,8 +59,6 @@ export default {
       );
 
       const tokenData = await tokenRes.json();
-
-      // ✅ Store host token in memory
       accessToken = tokenData.access_token;
 
       return Response.redirect(
@@ -70,45 +68,13 @@ export default {
     }
 
     // -------------------------------
-    // STATUS (is host logged in?)
-    // -------------------------------
-    if (url.pathname === "/status") {
-      return new Response(
-        JSON.stringify({
-          loggedIn: Boolean(accessToken),
-        }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    // -------------------------------
-    // LOGOUT (clear host token)
-    // -------------------------------
-    if (url.pathname === "/logout") {
-      accessToken = null;
-
-      return new Response(
-        JSON.stringify({ loggedOut: true }),
-        {
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    }
-
-    // -------------------------------
     // SEARCH (client credentials)
     // -------------------------------
     if (url.pathname === "/search") {
       const query = url.searchParams.get("q");
-      if (!query) return new Response("Missing query", { status: 400 });
+      if (!query) {
+        return new Response("Missing query", { status: 400 });
+      }
 
       const token = await getAppToken(env);
 
@@ -117,14 +83,19 @@ export default {
           query
         )}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
       const data = await res.json();
 
       return new Response(JSON.stringify(data.tracks.items), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
       });
     }
 
@@ -132,16 +103,6 @@ export default {
     // QUEUE (host only)
     // -------------------------------
     if (url.pathname === "/queue" && request.method === "POST") {
-      if (!accessToken) {
-        return new Response(
-          JSON.stringify({ error: "No host logged in" }),
-          {
-            status: 401,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-
       const body = await request.json();
 
       await fetch(
@@ -157,7 +118,10 @@ export default {
       );
 
       return new Response(JSON.stringify({ success: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
       });
     }
 
