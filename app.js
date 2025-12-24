@@ -9,32 +9,6 @@ let selectedTrack = null;
 // Cloudflare Worker URL
 const API_BASE = "https://jamjury.pama1549.workers.dev";
 
-async function checkHostStatus() {
-  try {
-    const res = await fetch(`${API_BASE}/status`);
-    const data = await res.json();
-
-    if (data.loggedIn) {
-      hostControls.classList.remove("hidden");
-      hostLoginButton.classList.add("hidden");
-    }
-  } catch (err) {
-    console.error("Failed to check host status", err);
-  }
-}
-
-checkHostStatus();
-
-const logoutButton = document.getElementById("logoutHost");
-
-if (logoutButton) {
-  logoutButton.addEventListener("click", async () => {
-    await fetch(`${API_BASE}/logout`);
-    location.reload();
-  });
-}
-
-
 // Login as host (Spotify OAuth)
 hostLoginButton.addEventListener("click", () => {
   window.location.href = `${API_BASE}/login`;
@@ -46,7 +20,7 @@ songInput.addEventListener("input", async () => {
   selectedTrack = null;
   submitButton.disabled = true;
 
-  const query = `${songInput.value}`.trim();
+  const query = `${songInput.value} ${artistInput.value}`.trim();
   if (!query) return;
 
   try {
