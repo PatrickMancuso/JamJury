@@ -46,7 +46,7 @@ songInput.addEventListener("input", async () => {
   selectedTrack = null;
   submitButton.disabled = true;
 
-  const query = `${songInput.value} ${artistInput.value}`.trim();
+  const query = `${songInput.value}`.trim();
   if (!query) return;
 
   try {
