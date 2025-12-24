@@ -2,34 +2,19 @@ const songInput = document.getElementById("songInput");
 const artistInput = document.getElementById("artistInput");
 const submitButton = document.getElementById("submitButton");
 const results = document.getElementById("results");
-const hostControls = document.getElementById("hostControls");
-const playNextButton = document.getElementById("playNext");
-const skipButton = document.getElementById("skip");
-
-// Detect host mode via URL
-const params = new URLSearchParams(window.location.search);
-const isHost = params.has("host");
-
-if (isHost) {
-  hostControls.classList.remove("hidden");
-}
-
+const hostLoginButton = document.getElementById("hostLogin");
 
 let selectedTrack = null;
 
-// CHANGE THIS once the Worker is deployed
+// Cloudflare Worker URL
 const API_BASE = "https://jamjury.pama1549.workers.dev";
 
-const hostLoginButton = document.getElementById("hostLogin");
+// Login as host (Spotify OAuth)
+hostLoginButton.addEventListener("click", () => {
+  window.location.href = `${API_BASE}/login`;
+});
 
-if (isHost && hostLoginButton) {
-  hostLoginButton.addEventListener("click", () => {
-    window.location.href = `${API_BASE}/login`;
-  });
-}
-
-
-// Search Spotify as user types
+// 🔍 Search Spotify as user types
 songInput.addEventListener("input", async () => {
   results.innerHTML = "";
   selectedTrack = null;
@@ -39,22 +24,15 @@ songInput.addEventListener("input", async () => {
   if (!query) return;
 
   try {
-    const res = await fetch(`${API_BASE}/queue`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    uri: selectedTrack.uri
-  }),
-});
+    const res = await fetch(
+      `${API_BASE}/search?q=${encodeURIComponent(query)}`
+    );
 
-
-    if (!res.ok) {
-      throw new Error("Search failed");
-    }
+    if (!res.ok) throw new Error("Search failed");
 
     const tracks = await res.json();
 
-    if (tracks.length === 0) {
+    if (!tracks.length) {
       results.innerHTML = `<div class="result-item">No results found</div>`;
       return;
     }
@@ -82,25 +60,30 @@ songInput.addEventListener("input", async () => {
   }
 });
 
-// Submit selected track
+// ➕ Add selected track to Spotify queue
 submitButton.addEventListener("click", async () => {
   if (!selectedTrack) return;
 
   try {
-    await fetch(`${API_BASE}/submit`, {
+    const res = await fetch(`${API_BASE}/queue`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(selectedTrack),
+      body: JSON.stringify({
+        uri: selectedTrack.uri
+      }),
     });
 
-    alert("Song submitted!");
+    if (!res.ok) throw new Error("Queue failed");
+
+    alert("Added to Spotify queue!");
+
     submitButton.disabled = true;
     results.innerHTML = "";
     songInput.value = "";
     artistInput.value = "";
     selectedTrack = null;
   } catch (err) {
-    alert("Failed to submit song");
     console.error(err);
+    alert("Failed to add to queue");
   }
 });
