@@ -9,10 +9,36 @@ let selectedTrack = null;
 // Cloudflare Worker URL
 const API_BASE = "https://jamjury.pama1549.workers.dev";
 
+const logoutButton = document.getElementById("logoutHost");
+
+async function checkHostStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/status`);
+    const data = await res.json();
+
+    if (data.loggedIn) {
+      hostLoginButton.classList.add("hidden");
+      logoutButton.classList.remove("hidden");
+    } else {
+      hostLoginButton.classList.remove("hidden");
+      logoutButton.classList.add("hidden");
+    }
+  } catch (err) {
+    console.error("Failed to check host status");
+  }
+}
+
+
 // Login as host (Spotify OAuth)
 hostLoginButton.addEventListener("click", () => {
   window.location.href = `${API_BASE}/login`;
 });
+
+logoutButton.addEventListener("click", async () => {
+  await fetch(`${API_BASE}/logout`);
+  checkHostStatus();
+});
+
 
 // 🔍 Search Spotify as user types
 songInput.addEventListener("input", async () => {
@@ -87,3 +113,6 @@ submitButton.addEventListener("click", async () => {
     alert("Failed to add to queue");
   }
 });
+
+
+checkHostStatus();
