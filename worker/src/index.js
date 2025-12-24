@@ -62,7 +62,10 @@ export default {
 
 accessToken = tokenData.access_token;
 
-      return Response.redirect("https://jamjury.pages.dev/?host", 302);
+return Response.redirect(
+  "https://patrickmancuso.github.io/JamJury/?host",
+  302
+);
     }
 
     // -------------------------------
