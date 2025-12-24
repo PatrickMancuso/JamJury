@@ -60,12 +60,47 @@ export default {
 
       const tokenData = await tokenRes.json();
 
-accessToken = tokenData.access_token;
+      // ✅ Store host token in memory
+      accessToken = tokenData.access_token;
 
-return Response.redirect(
-  "https://patrickmancuso.github.io/JamJury/?host",
-  302
-);
+      return Response.redirect(
+        "https://patrickmancuso.github.io/JamJury/?host",
+        302
+      );
+    }
+
+    // -------------------------------
+    // STATUS (is host logged in?)
+    // -------------------------------
+    if (url.pathname === "/status") {
+      return new Response(
+        JSON.stringify({
+          loggedIn: Boolean(accessToken),
+        }),
+        {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    // -------------------------------
+    // LOGOUT (clear host token)
+    // -------------------------------
+    if (url.pathname === "/logout") {
+      accessToken = null;
+
+      return new Response(
+        JSON.stringify({ loggedOut: true }),
+        {
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        }
+      );
     }
 
     // -------------------------------
@@ -78,7 +113,9 @@ return Response.redirect(
       const token = await getAppToken(env);
 
       const res = await fetch(
-        `https://api.spotify.com/v1/search?type=track&limit=5&q=${encodeURIComponent(query)}`,
+        `https://api.spotify.com/v1/search?type=track&limit=5&q=${encodeURIComponent(
+          query
+        )}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -95,6 +132,16 @@ return Response.redirect(
     // QUEUE (host only)
     // -------------------------------
     if (url.pathname === "/queue" && request.method === "POST") {
+      if (!accessToken) {
+        return new Response(
+          JSON.stringify({ error: "No host logged in" }),
+          {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
       const body = await request.json();
 
       await fetch(
@@ -104,7 +151,7 @@ return Response.redirect(
         {
           method: "POST",
           headers: {
-Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
