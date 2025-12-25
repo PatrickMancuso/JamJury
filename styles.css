@@ -7,8 +7,7 @@
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background:
-    radial-gradient(circle at top, #1a1d24 0%, #0f1115 55%);
+  background: url("assets/jury background.jpg") center 140px / 260px no-repeat, #0f1115;
   color: #ffffff;
   min-height: 100vh;
   display: flex;
