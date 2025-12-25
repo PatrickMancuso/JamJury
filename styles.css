@@ -8,14 +8,14 @@
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background:
-    url("assets/Jam Jury Logo.png") center 140px / 260px no-repeat,
-    #0f1115;
+    radial-gradient(circle at top, #1a1d24 0%, #0f1115 55%);
   color: #ffffff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 1rem;
 }
+
 
 .app-logo {
   width: 220px;
