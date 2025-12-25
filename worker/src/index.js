@@ -97,11 +97,10 @@ if (url.pathname === "/logout") {
    headers: {
   Authorization:
     "Basic " +
-    Buffer.from(
-      `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
-    ).toString("base64"),
+    btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
   "Content-Type": "application/x-www-form-urlencoded",
 },
+
       body: new URLSearchParams({
         grant_type: "authorization_code",
         code,
@@ -206,15 +205,18 @@ async function getAppToken(env) {
     headers: {
       Authorization:
         "Basic " +
-        Buffer.from(
-          `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
-        ).toString("base64"),
+        btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: "grant_type=client_credentials",
   });
 
+  if (!res.ok) {
+    throw new Error("Failed to get Spotify app token");
+  }
+
   const data = await res.json();
   return data.access_token;
 }
+
 
