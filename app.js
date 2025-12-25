@@ -1,5 +1,4 @@
 const songInput = document.getElementById("songInput");
-const artistInput = document.getElementById("artistInput");
 const submitButton = document.getElementById("submitButton");
 const results = document.getElementById("results");
 const hostLoginButton = document.getElementById("hostLogin");
@@ -46,7 +45,7 @@ songInput.addEventListener("input", async () => {
   selectedTrack = null;
   submitButton.disabled = true;
 
-  const query = `${songInput.value} ${artistInput.value}`.trim();
+const query = songInput.value.trim();
   if (!query) return;
 
   try {
@@ -106,7 +105,6 @@ submitButton.addEventListener("click", async () => {
     submitButton.disabled = true;
     results.innerHTML = "";
     songInput.value = "";
-    artistInput.value = "";
     selectedTrack = null;
   } catch (err) {
     console.error(err);
