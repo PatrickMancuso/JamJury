@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JamJury - Welcome</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <img src="assets/Jam Jury Logo.png" alt="Jam Jury" class="app-logo" />
+      <h1>Welcome to JamJury!</h1>
+      <p class="subtitle">A music prompt card game</p>
+    </header>
+
+    <section class="rules">
+      <h2>How to Play</h2>
+      <ol>
+        <li>A judge draws a prompt card (e.g., "The best song for a wedding").</li>
+        <li>Players submit their song choices into the queue.</li>
+        <li>Each song plays for 30 seconds.</li>
+        <li>The judge picks the winning song for the round.</li>
+        <li>Repeat until the game ends!</li>
+      </ol>
+    </section>
+
+    <button class="primary-button" id="startGame">Start Game</button>
+  </main>
+
+  <script>
+    document.getElementById('startGame').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
