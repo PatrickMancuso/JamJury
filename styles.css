@@ -20,6 +20,18 @@ body {
 }
 
 
+.rules {
+  background: rgba(28, 31, 38, 0.8);
+  padding: 1rem;
+  border-radius: 12px;
+}
+.rules ol {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+.rules li {
+  margin-bottom: 0.5rem;
+}
 
 
 .app-logo {
