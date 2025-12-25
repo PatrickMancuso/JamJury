@@ -81,6 +81,15 @@ if (url.pathname === "/logout") {
    if (url.pathname === "/callback") {
   const code = url.searchParams.get("code");
 
+  // SAFETY CHECK
+  if (!code) {
+    return new Response(
+      "Spotify login failed or was cancelled.",
+      { status: 400 }
+    );
+  }
+
+
   const tokenRes = await fetch(
     "https://accounts.spotify.com/api/token",
     {
