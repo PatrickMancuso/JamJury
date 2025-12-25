@@ -17,6 +17,14 @@ body {
   padding: 1rem;
 }
 
+.app-logo {
+  width: 220px;
+  max-width: 80%;
+  margin: 0 auto 0.5rem;
+  display: block;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45));
+}
+
 
 /* --------- App Container --------- */
 .app {
