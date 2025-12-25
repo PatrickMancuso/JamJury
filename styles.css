@@ -7,13 +7,19 @@
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: url("assets/jury background.jpg") center 550px / 800px no-repeat, #0f1115;
+  background-image: url("assets/jury background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
   color: #ffffff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 1rem;
 }
+
+
 
 
 .app-logo {
