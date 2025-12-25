@@ -94,12 +94,14 @@ if (url.pathname === "/logout") {
     "https://accounts.spotify.com/api/token",
     {
       method: "POST",
-      headers: {
-        Authorization:
-          "Basic " +
-          btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+   headers: {
+  Authorization:
+    "Basic " +
+    Buffer.from(
+      `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
+    ).toString("base64"),
+  "Content-Type": "application/x-www-form-urlencoded",
+},
       body: new URLSearchParams({
         grant_type: "authorization_code",
         code,
@@ -204,7 +206,9 @@ async function getAppToken(env) {
     headers: {
       Authorization:
         "Basic " +
-        btoa(`${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`),
+        Buffer.from(
+          `${env.SPOTIFY_CLIENT_ID}:${env.SPOTIFY_CLIENT_SECRET}`
+        ).toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: "grant_type=client_credentials",
@@ -213,3 +217,4 @@ async function getAppToken(env) {
   const data = await res.json();
   return data.access_token;
 }
+
