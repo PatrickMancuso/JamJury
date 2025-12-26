@@ -28,7 +28,7 @@ async function checkHostStatus() {
 }
 
 
-// Login as host (Spotify OAuth)
+// Login as host (Spotify OAuthh)
 hostLoginButton.addEventListener("click", () => {
   window.location.href = `${API_BASE}/login`;
 });
