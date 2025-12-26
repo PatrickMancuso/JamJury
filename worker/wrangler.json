@@ -1,5 +1,11 @@
-{ 
-  "name": "jamjury", 
-  "main": "src/index.js", 
-  "compatibility_date": "2024-11-01" 
-}
+name = "jamjury"
+main = "src/index.js"
+compatibility_date = "2024-10-01"
+
+kv_namespaces = [
+  { binding = "HOST_KV", id = "YOUR_KV_ID" }
+]
+
+[vars]
+SPOTIFY_CLIENT_ID = "ab85089ac90a4a84b105789fc7249472"
+SPOTIFY_REDIRECT_URI = "https://jamjury.pama1549.workers.dev/callback"
