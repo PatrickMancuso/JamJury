@@ -3,7 +3,7 @@ main = "src/index.js"
 compatibility_date = "2024-10-01"
 
 kv_namespaces = [
-  { binding = "HOST_KV", id = "YOUR_KV_ID" }
+  { binding = "HOST_KV", id = "MY_KV_ID" }
 ]
 
 [vars]
