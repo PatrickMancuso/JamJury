@@ -342,3 +342,4 @@ async function getAppToken(env) {
 function toBase64(str) {
   return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
 }
+};
